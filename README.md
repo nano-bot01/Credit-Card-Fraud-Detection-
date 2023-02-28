@@ -15,7 +15,6 @@ Credit Card Fraud Detection using Logistic Regression on credit card dataset
 
 
 ### Dependencies used :
-
 ```
 import numpy as np
 import pandas as pd
@@ -26,26 +25,92 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 ```
 
+
 ### Loading dataset
+
+```
+# importing data
+
+transaction_dataset= pd.read_csv("/content/drive/MyDrive/google_collab/creditcard.csv")
+transaction_dataset.head(10)
+```
+
+
 ### Data analysis 
   * shape
   * info()
   * describe()
   * isnull
   * count_values()
-  
+  * dtypes
+ 
+ 
+### Sampling 
+  - 0 : Normal transaction
+  - 1 : Fraudulent transaction
 
+```
+legit = transaction_dataset[transaction_dataset.Class == 0]
+fraud = transaction_dataset[transaction_dataset.Class == 1]
+```
+
+comparing the samples
+```
+# comparing the values for both transaction 
+transaction_dataset.groupby('Class').mean()
+```
+
+
+### Under-Sampling 
+
+- build a sample dataset having similar distribution of normal and fraudulent transactions.
+- number of fraudulent transaction is = 492
 
 
 ### Visualization of data 
 
-![001](https://user-images.githubusercontent.com/78251168/221812102-c0a87786-fa08-44a6-b7a5-7b8b26d73e87.png)
+```
+plt.figure(figsize = (20,11))
+# heatmap size in ration 16:9
 
+sns.heatmap(new_transaction_dataset2.corr(), annot = True, cmap = 'coolwarm')
+# heatmap parameters
+
+plt.title("Heatmap for correlation matrix for credit card data ", fontsize = 22)
+plt.show()
+```
+
+![001](https://user-images.githubusercontent.com/78251168/221812102-c0a87786-fa08-44a6-b7a5-7b8b26d73e87.png)
 
 ![002](https://user-images.githubusercontent.com/78251168/221812120-c05a4036-aaca-4f53-8940-158215258f12.png)
 
 
+### Splitting data (features and target)
+```
+X = new_transaction_dataset2.drop(columns = 'Class', axis = 1)
+Y = new_transaction_dataset2['Class']
+```
+
+
+### Splitting into training and test
+```
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.2, stratify = Y, random_state = 2)
+```
+
+
+### Model Training 
+```
+model = LogisticRegression()
+model.fit(X_train, Y_train)
+```
+
 
 ### Model Evaluation 
 
-![image](https://user-images.githubusercontent.com/78251168/221812029-b0fa145a-ea8e-44bd-813d-c2a23af99328.png)
+```
+print("\nAccuracy on Training data ",traning_data_accuracy,"\n")
+print("Accuracy on Training data ",test_data_accuracy)
+```
+
+![image](https://user-images.githubusercontent.com/78251168/221815651-a85aeeaa-863c-4b52-996a-4aee61b61610.png)
+
